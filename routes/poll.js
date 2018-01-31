@@ -19,7 +19,7 @@ router.get('/', (req, res) =>{
 router.post('/', (req, res) =>{
   pusher.trigger('poll', 'vote', {
     points: 1,
-    os: req.body.os
+    meat: req.body.meat
   });
 
   return res.json({success: true, message: 'Thanks for voting!'});
