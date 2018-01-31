@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Realtime Poll</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+  </head>
+  <body>
+    <div class="container">
+      <h1>VOTE</h1>
+      <p>Vote for your favorite meat</p>
+      <form id="vote-form">
+        <p>
+          <input type="radio" name="meat" id="beef"
+          value="Beef">
+          <label for="beef">Beef</label>
+        </p>
+        <p>
+          <input type="radio" name="meat" id="chicken"
+          value="Chicken">
+          <label for="chicken">Chicken</label>
+        </p>
+        <p>
+          <input type="radio" name="meat" id="bacon"
+          value="Bacon">
+          <label for="bacon">Bacon</label>
+        </p>
+        <p>
+          <input type="radio" name="meat" id="seafood"
+          value="Seafood">
+          <label for="seafood">Seafood</label>
+        </p>
+        <input type="submit" class="btn" value="Vote">
+      </form>
+
+      <br><br>
+
+      <div id="chartContainer" style="height: 300px; width: 100%">
+
+      </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/4.2.2/pusher.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+    script <script src="main.js"></script>
+  </body>
+</html>
