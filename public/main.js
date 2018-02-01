@@ -22,56 +22,69 @@ form.addEventListener('submit', (e) => {
 
 });
 
-//canvas.js
-let dataPoints = [
-  { label: 'Beef', y: 0},
-  { label: 'Chicken', y: 0},
-  { label: 'Bacon', y: 0},
-  { label: 'Seafood', y: 0},
-];
+fetch('http://localhost:3000/poll')
+.then(res => res.json())
+.then(data => {
+  const votes = data.votes;
+  const totalVotes = votes.length;
+  //count vote points for each one - reduce takes accumulator and current vallue
+  const voteCounts = votes.reduce(
+    (acc, vote) =>
+    ((acc[vote.meat] = (acc[vote.meat] || 0) + parseInt(vote.points)),acc), {});
 
-const chartContainer = document.querySelector('#chartContainer');
+  //canvas.js
+  let dataPoints = [
+    { label: 'Beef', y: voteCounts.Beef },
+    { label: 'Chicken', y: voteCounts.Chicken },
+    { label: 'Bacon', y: voteCounts.Bacon },
+    { label: 'Seafood', y: voteCounts.Seafood }
+  ];
 
-if(chartContainer) {
-  const chart = new CanvasJS.Chart('chartContainer', {
-    animationEnabled: true,
-    theme: 'theme2',
-    title: {
-      text: 'Carnivore Results'
-    },
-    legend: {
-      maxWidth: 450,
-      itemWidth: 220
-    },
-    data: [
-      {
-        type: 'pie',
-        showInLegend: true,
-        legendText: "{label}",
-        dataPoints: dataPoints
-      }
-    ]
-  });
-  chart.render();
+  const chartContainer = document.querySelector('#chartContainer');
 
-  //pusher client side script
-  Pusher.logToConsole = true;
+  if(chartContainer) {
+    const chart = new CanvasJS.Chart('chartContainer', {
+      animationEnabled: true,
+      theme: 'theme2',
+      title: {
+        text: `Total Votes ${totalVotes}`
+      },
+      legend: {
+        maxWidth: 450,
+        itemWidth: 220
+      },
+      data: [
+        {
+          type: 'pie',
+          showInLegend: true,
+          legendText: "{label}",
+          dataPoints: dataPoints
+        }
+      ]
+    });
+    chart.render();
 
-   var pusher = new Pusher('2c154010285bd06837d6', {
-     cluster: 'us2',
-     encrypted: true
-   });
+    //pusher client side script
+    Pusher.logToConsole = true;
 
-   var channel = pusher.subscribe('poll');
-   channel.bind('vote', function(data) {
-     dataPoints = dataPoints.map(x => {
-       if(x.label == data.meat){
-         x.y += data.points;
-         return x;
-       } else {
-         return x;
-       }
+     var pusher = new Pusher('2c154010285bd06837d6', {
+       cluster: 'us2',
+       encrypted: true
      });
-     chart.render();
-   });
-}
+
+     var channel = pusher.subscribe('poll');
+     channel.bind('vote', function(data) {
+       dataPoints = dataPoints.map(x => {
+         if(x.label == data.meat){
+           x.y += data.points;
+           return x;
+         } else {
+           return x;
+         }
+       });
+       chart.render();
+     });
+  }
+
+
+});
